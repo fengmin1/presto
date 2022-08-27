@@ -71,4 +71,13 @@ constexpr folly::StringPiece kCounterAllocatedMemoryBytes{
 // PartitionedOutputBufferManager
 constexpr folly::StringPiece kCounterTotalPartitionedOutputBuffer{
     "presto_cpp.num_partitioned_output_buffer"};
+
+constexpr folly::StringPiece kCounterMemoryManagerMemoryBytes{
+    "presto_cpp.memory_manager_memory_bytes"};
+constexpr folly::StringPiece kCounterMemoryManagerSmallAllocBytes{
+    "presto_cpp.memory_manager_small_alloc_bytes"};
+constexpr folly::StringPiece kCounterMemoryManagerSizeClassAllocBytes{
+    "presto_cpp.memory_manager_size_class_alloc_bytes"};
+constexpr folly::StringPiece kCounterMemoryManagerBigAllocBytes{
+    "presto_cpp.memory_manager_big_alloc_bytes"};
 } // namespace facebook::presto
