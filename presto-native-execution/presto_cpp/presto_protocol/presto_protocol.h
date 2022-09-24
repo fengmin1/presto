@@ -1076,12 +1076,12 @@ struct TaskStats {
   int completedDrivers = {};
   double cumulativeUserMemory = {};
   double cumulativeTotalMemory = {};
-  int64_t userMemoryReservation = {};
+  int64_t userMemoryReservationInBytes = {};
   int64_t revocableMemoryReservationInBytes = {};
   int64_t systemMemoryReservationInBytes = {};
   int64_t peakTotalMemoryInBytes = {};
   int64_t peakUserMemoryInBytes = {};
-  int64_t peakNodeTotalMemoryInbytes = {};
+  int64_t peakNodeTotalMemoryInBytes = {};
   int64_t totalScheduledTimeInNanos = {};
   int64_t totalCpuTimeInNanos = {};
   int64_t totalBlockedTimeInNanos = {};
@@ -1542,6 +1542,15 @@ using HostAddress = std::string;
 
 } // namespace facebook::presto::protocol
 namespace facebook::presto::protocol {
+enum class ErrorCause {
+  UNKNOWN,
+  LOW_PARTITION_COUNT,
+  EXCEEDS_BROADCAST_MEMORY_LIMIT
+};
+extern void to_json(json& j, const ErrorCause& e);
+extern void from_json(const json& j, ErrorCause& e);
+}
+namespace facebook::presto::protocol {
 enum class ErrorType {
   USER_ERROR,
   INTERNAL_ERROR,
@@ -1579,6 +1588,7 @@ struct ExecutionFailureInfo {
   ErrorLocation errorLocation = {};
   ErrorCode errorCode = {};
   HostAddress remoteHost = {};
+  ErrorCause errorCause = {};
 };
 void to_json(json& j, const ExecutionFailureInfo& p);
 void from_json(const json& j, ExecutionFailureInfo& p);

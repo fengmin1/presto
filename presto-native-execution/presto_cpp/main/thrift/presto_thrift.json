@@ -34,6 +34,24 @@
   },
   {
     "enum": true,
+    "class_name": "ErrorCause",
+    "elements": [
+      {
+        "name": "UNKNOWN",
+        "tag": 0
+      },
+      {
+        "name": "LOW_PARTITION_COUNT",
+        "tag": 1
+      },
+      {
+        "name": "EXCEEDS_BROADCAST_MEMORY_LIMIT",
+        "tag": 2
+      }
+    ]
+  },
+  {
+    "enum": true,
     "class_name": "ErrorType",
     "elements": [
       {
@@ -236,6 +254,34 @@
         "optional": false,
         "required": false,
         "tag": 17
+      },
+      {
+        "field_name": "totalCpuTimeInNanos",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 18
+      },
+      {
+        "field_name": "taskAgeInMillis",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 19
+      },
+      {
+        "field_name": "queuedPartitionedSplitsWeight",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 20
+      },
+      {
+        "field_name": "runningPartitionedSplitsWeight",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 21
       }
     ]
   },
@@ -263,6 +309,13 @@
         "optional": false,
         "required": false,
         "tag": 3
+      },
+      {
+        "field_name": "retriable",
+        "field_type": "bool",
+        "optional": false,
+        "required": false,
+        "tag": 4
       }
     ]
   },
@@ -325,6 +378,13 @@
         "optional": false,
         "required": false,
         "tag": 8
+      },
+      {
+        "field_name": "errorCause",
+        "field_type": "ErrorCause",
+        "optional": false,
+        "required": false,
+        "tag": 9
       }
     ]
   }

@@ -19,14 +19,29 @@ ENABLE_WALL ?= 1
 NUM_THREADS ?= $(shell getconf _NPROCESSORS_CONF 2>/dev/null || echo 1)
 CPU_TARGET ?= "avx"
 CMAKE_PREFIX_PATH ?= "/usr/local"
+DEPENDENCY_DIR = "/opt/dependency/adapter-deps/install"
 
-PRESTO_ENABLE_PARQUET ?= "OFF"
+PRESTO_ENABLE_PARQUET ?= "ON"
+PRESTO_ENABLE_S3 ?= "ON"
+PRESTO_ENABLE_HDFS ?= "ON"
 
 CMAKE_FLAGS := -DTREAT_WARNINGS_AS_ERRORS=${TREAT_WARNINGS_AS_ERRORS}
 CMAKE_FLAGS += -DENABLE_ALL_WARNINGS=${ENABLE_WALL}
 CMAKE_FLAGS += -DCMAKE_PREFIX_PATH=$(CMAKE_PREFIX_PATH)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
 CMAKE_FLAGS += -DPRESTO_ENABLE_PARQUET=$(PRESTO_ENABLE_PARQUET)
+CMAKE_FLAGS += -DPRESTO_ENABLE_HDFS=$(PRESTO_ENABLE_HDFS)
+CMAKE_FLAGS += -DVELOX_ENABLE_PRESTO_FUNCTIONS=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_HIVE_CONNECTOR=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_ARROW=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_PARQUET=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_HDFS=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_S3=ON
+CMAKE_FLAGS += -DVELOX_ENABLE_EXPRESSION=ON
+CMAKE_FLAGS += -DVELOX_BUILD_TEST_UTILS=ON
+CMAKE_FLAGS += -DVELOX_BUILD_MINIMAL="OFF"
+CMAKE_FLAGS += -DPRESTO_ENABLE_S3=ON
+CMAKE_FLAGS += -DAWSSDK_ROOT_DIR=$(DEPENDENCY_DIR)
 
 SHELL := /bin/bash
 
@@ -73,10 +88,13 @@ unittest: debug			#: Build with debugging and run unit tests
 	cd $(BUILD_BASE_DIR)/debug && ctest -j $(NUM_THREADS) -VV --output-on-failure --exclude-regex velox.*
 
 presto_protocol:		#: Build the presto_protocol serde library
-	cd presto_cpp/presto_protocol; $(MAKE) presto_protocol
+	cd presto_cpp/presto_protocol; $(MAKE) presto_protocol; $(MAKE) presto_protocol.proto
 
 TypeSignature:		#: Build the Presto TypeSignature parser
 	cd presto_cpp/main/types; $(MAKE) TypeSignature
+
+Thrift:
+	cd presto_cpp/main/thrift; $(MAKE) all
 
 format-fix: 			#: Fix formatting issues in the master branch
 	pushd "$$(pwd)/.." && presto-native-execution/velox/scripts/check.py format master --fix && popd
