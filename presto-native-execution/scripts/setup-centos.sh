@@ -56,11 +56,23 @@ export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TA
 )
 
 (
+  git clone https://github.com/facebook/folly &&
+  cd folly &&
+  git checkout $FB_OS_VERSION &&
+  mkdir _build && cd _build &&
+  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ..
+  make -j $(nproc)
+  make install
+)
+  # export CMAKE_PREFIX_PATH="/usr/local/folly:${CMAKE_PREFIX_PATH}"
+  # export LD_LIBRARY_PATH="/usr/local/folly/lib:${LD_LIBRARY_PATH}"
+  # export PKG_CONFIG_PATH="/usr/local/folly/lib/pkgconfig:${PKG_CONFIG_PATH}"
+(
   git clone https://github.com/facebookincubator/fizz &&
   cd fizz &&
   git checkout $FB_OS_VERSION &&
   mkdir _build && cd _build &&
-  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DBUILD_TESTS=OFF ../fizz &&
+  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ../fizz &&
   make "-j$(nproc)" &&
   make install
 )
