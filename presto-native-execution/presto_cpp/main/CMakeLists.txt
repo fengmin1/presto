@@ -53,6 +53,7 @@ target_link_libraries(
   velox_serialization
   velox_encode
   velox_dwio_common_exception
+  velox_hive_connector
   velox_functions_lib
   velox_hive_partition_function
   velox_window

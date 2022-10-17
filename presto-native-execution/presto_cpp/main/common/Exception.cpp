@@ -48,7 +48,6 @@ protocol::ExecutionFailureInfo VeloxToPrestoExceptionTranslator::translate(
   error.errorCode.code = 0x00010000;
   error.errorCode.name = "GENERIC_INTERNAL_ERROR";
   error.errorCode.type = protocol::ErrorType::INTERNAL_ERROR;
-  error.errorCause = protocol::ErrorCause::UNKNOWN;
   return error;
 }
 
@@ -62,7 +61,6 @@ protocol::ExecutionFailureInfo VeloxToPrestoExceptionTranslator::translate(
   error.errorCode.type = protocol::ErrorType::INTERNAL_ERROR;
   error.type = "std::exception";
   error.message = e.what();
-  error.errorCause = protocol::ErrorCause::UNKNOWN;
   return error;
 }
 } // namespace facebook::presto

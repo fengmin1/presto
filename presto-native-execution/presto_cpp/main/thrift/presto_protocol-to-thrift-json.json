@@ -300,6 +300,42 @@
         "tag": 17,
         "proto_name": "peakNodeTotalMemoryReservationInBytes",
         "convert": true
+      },
+      {
+        "field_name": "totalCpuTimeInNanos",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 18,
+        "proto_name": "totalCpuTimeInNanos",
+        "convert": true
+      },
+      {
+        "field_name": "taskAgeInMillis",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 19,
+        "proto_name": "taskAgeInMillis",
+        "convert": true
+      },
+      {
+        "field_name": "queuedPartitionedSplitsWeight",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 20,
+        "proto_name": "queuedPartitionedSplitsWeight",
+        "convert": true
+      },
+      {
+        "field_name": "runningPartitionedSplitsWeight",
+        "field_type": "int64_t",
+        "optional": false,
+        "required": false,
+        "tag": 21,
+        "proto_name": "runningPartitionedSplitsWeight",
+        "convert": true
       }
     ],
     "proto_name": "TaskStatus"
@@ -333,6 +369,15 @@
         "required": false,
         "tag": 3,
         "proto_name": "type",
+        "convert": true
+      },
+      {
+        "field_name": "retriable",
+        "field_type": "bool",
+        "optional": false,
+        "required": false,
+        "tag": 4,
+        "proto_name": "retriable",
         "convert": true
       }
     ]
@@ -416,7 +461,7 @@
       {
         "field_name": "errorCause",
         "field_type": "ErrorCause",
-        "optional": true,
+        "optional": false,
         "required": false,
         "tag": 9,
         "proto_name": "errorCause",

@@ -36,6 +36,14 @@ CPU_TARGET="${CPU_TARGET:-avx}"
 SOURCE_FILE="$(dirname "${BASH_SOURCE}")/setup-helper-functions.sh"
 export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TARGET))
 
+function cmake_install {
+  local name=$1
+  shift
+  cmake -B "$name-build" -GNinja -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_CXX_FLAGS="${COMPILER_FLAGS}" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev "$@"
+  ninja -C "$name-build" install
+}
+
 (
   wget --max-redirect 3 https://download.libsodium.org/libsodium/releases/LATEST.tar.gz &&
   tar -xzvf LATEST.tar.gz &&
@@ -59,10 +67,11 @@ export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TA
   git clone https://github.com/facebook/folly &&
   cd folly &&
   git checkout $FB_OS_VERSION &&
-  mkdir _build && cd _build &&
-  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ..
-  make -j $(nproc)
-  make install
+  # mkdir _build && cd _build &&
+  cmake_install folly -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
+  # cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release ..
+  # make -j $(nproc)
+  # make install
 )
   # export CMAKE_PREFIX_PATH="/usr/local/folly:${CMAKE_PREFIX_PATH}"
   # export LD_LIBRARY_PATH="/usr/local/folly/lib:${LD_LIBRARY_PATH}"
@@ -71,44 +80,48 @@ export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TA
   git clone https://github.com/facebookincubator/fizz &&
   cd fizz &&
   git checkout $FB_OS_VERSION &&
-  mkdir _build && cd _build &&
-  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ../fizz &&
-  make "-j$(nproc)" &&
-  make install
+  # mkdir _build && cd _build &&
+  cmake_install fizz -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON fizz
+  # cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DCMAKE_INSTALL_PREFIX="/usr/local" -DCMAKE_PREFIX_PATH="/usr/local" -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF ../fizz &&
+  # make "-j$(nproc)" &&
+  # make install
 )
 
 (
   git clone https://github.com/facebook/wangle &&
   cd wangle &&
   git checkout $FB_OS_VERSION &&
-  cd wangle &&
-  mkdir _build && cd _build &&
-  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DBUILD_TESTS=OFF ../ &&
-  make "-j$(nproc)" &&
-  make install
+  cmake_install wangle -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON wangle
+  # cd wangle &&
+  # mkdir _build && cd _build &&
+  # cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DBUILD_TESTS=OFF ../ &&
+  # make "-j$(nproc)" &&
+  # make install
 )
 
 (
   git clone https://github.com/facebook/proxygen &&
   cd proxygen &&
   git checkout $FB_OS_VERSION &&
-  mkdir _build && cd _build &&
-  cmake                                     \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo       \
-    -DCMAKE_INSTALL_PREFIX="$PREFIX"        \
-    -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS"     \
-    -DCMAKE_INSTALL_PREFIX=/usr/local       \
-    -DBUILD_TESTS=OFF                       \
-    .. &&
-  make "-j$(nproc)" &&
-  make install
+  # mkdir _build && cd _build &&
+  # cmake                                     \
+  #   -DCMAKE_BUILD_TYPE=RelWithDebInfo       \
+  #   -DCMAKE_INSTALL_PREFIX="$PREFIX"        \
+  #   -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS"     \
+  #   -DCMAKE_INSTALL_PREFIX=/usr/local       \
+  #   -DBUILD_TESTS=OFF                       \
+  #   .. &&
+  # make "-j$(nproc)" &&
+  # make install
+  cmake_install proxygen -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
 )
 
 (
   git clone https://github.com/google/re2 &&
   cd re2 &&
-  make "-j$(nproc)" &&
-  make install
+  # make "-j$(nproc)" &&
+  # make install
+  cmake_install re2 -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
 )
 
 (
@@ -116,11 +129,12 @@ export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TA
   mkdir antlr4-cpp-runtime-4.9.3-source &&
   cd antlr4-cpp-runtime-4.9.3-source &&
   unzip ../antlr4-cpp-runtime-4.9.3-source.zip &&
-  mkdir build && mkdir run && cd build &&
-  cmake .. &&
-  DESTDIR=../run make "-j$(nproc)" install
-  cp -r ../run/usr/local/include/antlr4-runtime  /usr/local/include/. &&
-  cp ../run/usr/local/lib/*  /usr/local/lib/. &&
+  cmake_install antlr4 -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
+  # mkdir build && mkdir run && cd build &&
+  # cmake .. &&
+  # DESTDIR=../run make "-j$(nproc)" install
+  # cp -r ../run/usr/local/include/antlr4-runtime  /usr/local/include/. &&
+  # cp ../run/usr/local/lib/*  /usr/local/lib/. &&
   ldconfig
 )
 
@@ -128,10 +142,11 @@ export COMPILER_FLAGS=$(source "$SOURCE_FILE" && echo -n $(get_cxx_flags $CPU_TA
   git clone https://github.com/facebook/fbthrift &&
   cd fbthrift &&
   git checkout $FB_OS_VERSION &&
-  cd build &&
-  cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DBUILD_TESTS=OFF .. &&
-  make "-j$(nproc)" &&
-  make install
+  cmake_install fbthrift -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
+  # cd build &&
+  # cmake -DCMAKE_CXX_FLAGS="$COMPILER_FLAGS" -DBUILD_TESTS=OFF .. &&
+  # make "-j$(nproc)" &&
+  # make install
 )
 
 dnf clean all

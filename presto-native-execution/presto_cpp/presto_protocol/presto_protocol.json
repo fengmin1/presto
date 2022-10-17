@@ -4222,7 +4222,8 @@
       },
       {
         "element": "EXCEEDS_BROADCAST_MEMORY_LIMIT",
-        "_N": 3
+        "_N": 3,
+        "_last": true
       }
     ]
   },
