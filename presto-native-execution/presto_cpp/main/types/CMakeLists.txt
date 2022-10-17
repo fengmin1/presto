@@ -22,7 +22,7 @@ add_dependencies(presto_types presto_type_converter velox_type
                  velox_dwio_dwrf_proto)
 
 target_link_libraries(presto_types presto_type_converter
-                      velox_hive_partition_function velox_tpch_gen)
+                      velox_hive_partition_function)
 
 if(PRESTO_ENABLE_TESTING)
   add_subdirectory(tests)

@@ -145,7 +145,6 @@ void PrestoServer::run() {
   velox::filesystems::registerLocalFileSystem();
   registerOptionalHiveStorageAdapters();
   protocol::registerHiveConnectors();
-  protocol::registerTpchConnector();
 
   auto executor = std::make_shared<folly::IOThreadPoolExecutor>(
       systemConfig->numIoThreads(),

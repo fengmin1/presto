@@ -44,10 +44,6 @@ void registerHiveConnectors() {
   registerConnector("hive-hadoop2", "hive");
 }
 
-void registerTpchConnector() {
-  registerConnector("tpch", "tpch");
-}
-
 const std::string& getConnectorKey(const std::string& connectorName) {
   auto it = connectors().find(connectorName);
   VELOX_CHECK(
