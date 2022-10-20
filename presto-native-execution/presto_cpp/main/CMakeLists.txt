@@ -36,7 +36,7 @@ target_include_directories(presto_server_lib PRIVATE ${presto_thrift_INCLUDES})
 target_link_libraries(
   presto_server_lib
   $<TARGET_OBJECTS:presto_type_converter>
-  $<TARGET_OBJECTS:presto_types>
+  presto_types
   $<TARGET_OBJECTS:presto_protocol>
   presto_adapters
   presto_common
@@ -53,6 +53,7 @@ target_link_libraries(
   velox_serialization
   velox_encode
   velox_dwio_common_exception
+  velox_hive_connector
   velox_functions_lib
   velox_hive_partition_function
   velox_window
@@ -72,7 +73,6 @@ target_link_libraries(
   velox_functions_prestosql
   velox_aggregates
   velox_hive_connector
-  velox_tpch_connector
   velox_presto_serializer
   velox_dwio_dwrf_reader)
 

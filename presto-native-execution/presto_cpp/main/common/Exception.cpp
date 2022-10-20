@@ -42,12 +42,14 @@ protocol::ExecutionFailureInfo VeloxToPrestoExceptionTranslator::translate(
     auto itrErrorCode = itrErrorCodesMap->second.find(errorCode);
     if (itrErrorCode != itrErrorCodesMap->second.end()) {
       error.errorCode = itrErrorCode->second;
+      error.errorCode.retriable = false;
       return error;
     }
   }
   error.errorCode.code = 0x00010000;
   error.errorCode.name = "GENERIC_INTERNAL_ERROR";
   error.errorCode.type = protocol::ErrorType::INTERNAL_ERROR;
+  error.errorCode.retriable = false;
   return error;
 }
 

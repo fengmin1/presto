@@ -254,35 +254,8 @@
         "optional": false,
         "required": false,
         "tag": 17
-      },
-      {
-        "field_name": "totalCpuTimeInNanos",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 18
-      },
-      {
-        "field_name": "taskAgeInMillis",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 19
-      },
-      {
-        "field_name": "queuedPartitionedSplitsWeight",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 20
-      },
-      {
-        "field_name": "runningPartitionedSplitsWeight",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 21
       }
+
     ]
   },
   {

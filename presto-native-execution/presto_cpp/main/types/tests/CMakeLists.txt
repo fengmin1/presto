@@ -20,7 +20,6 @@ target_link_libraries(
   gtest_main
   presto_protocol
   velox_hive_connector
-  velox_tpch_connector
   velox_exec
   velox_dwio_common_exception
   presto_type_converter
@@ -52,7 +51,7 @@ target_link_libraries(
   gtest_main
   $<TARGET_OBJECTS:presto_protocol>
   $<TARGET_OBJECTS:presto_type_converter>
-  $<TARGET_OBJECTS:presto_types>
+  presto_types
   velox_core
   velox_dwio_common_exception
   velox_encode
@@ -60,7 +59,6 @@ target_link_libraries(
   velox_functions_prestosql
   velox_functions_lib
   velox_hive_connector
-  velox_tpch_connector
   velox_hive_partition_function
   velox_presto_serializer
   velox_serialization

@@ -129,6 +129,7 @@ void toThrift(const protocol::ErrorCode& proto, thrift::ErrorCode& thrift) {
   toThrift(proto.code, *thrift.code_ref());
   toThrift(proto.name, *thrift.name_ref());
   toThrift(proto.type, *thrift.type_ref());
+  toThrift(proto.retriable, *thrift.retriable_ref());
 }
 void toThrift(
     const protocol::ExecutionFailureInfo& proto,

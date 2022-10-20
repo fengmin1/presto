@@ -75,6 +75,7 @@ struct ErrorCode {
   1: i32 code;
   2: string name;
   3: ErrorType type;
+  4: bool retriable;
 }
 
 struct ExecutionFailureInfo {

@@ -300,43 +300,8 @@
         "tag": 17,
         "proto_name": "peakNodeTotalMemoryReservationInBytes",
         "convert": true
-      },
-      {
-        "field_name": "totalCpuTimeInNanos",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 18,
-        "proto_name": "totalCpuTimeInNanos",
-        "convert": true
-      },
-      {
-        "field_name": "taskAgeInMillis",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 19,
-        "proto_name": "taskAgeInMillis",
-        "convert": true
-      },
-      {
-        "field_name": "queuedPartitionedSplitsWeight",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 20,
-        "proto_name": "queuedPartitionedSplitsWeight",
-        "convert": true
-      },
-      {
-        "field_name": "runningPartitionedSplitsWeight",
-        "field_type": "int64_t",
-        "optional": false,
-        "required": false,
-        "tag": 21,
-        "proto_name": "runningPartitionedSplitsWeight",
-        "convert": true
       }
+
     ],
     "proto_name": "TaskStatus"
   },
