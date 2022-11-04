@@ -9,7 +9,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-.PHONY: all cmake build clean debug release unit submodules velox-submodule
+.PHONY: all cmake build clean debug release unittest submodules velox-submodule
 
 BUILD_BASE_DIR=_build
 BUILD_DIR=release
@@ -19,6 +19,7 @@ ENABLE_WALL ?= 1
 NUM_THREADS ?= $(shell getconf _NPROCESSORS_CONF 2>/dev/null || echo 1)
 CPU_TARGET ?= "avx"
 CMAKE_PREFIX_PATH ?= "/usr/local"
+PRESTOCPP_ROOT_DIR="$(shell pwd)"
 
 PRESTO_ENABLE_PARQUET ?= "OFF"
 PRESTO_ENABLE_HDFS ?= "OFF"
@@ -108,6 +109,13 @@ linux-container:
 	cp scripts/setup-$(CONTAINER_NAME).sh scripts/$(CONTAINER_NAME)-container.dockfile velox/scripts/setup-helper-functions.sh /tmp/docker && \
 	cd /tmp/docker && \
 	docker build --build-arg cpu_target=$(CPU_TARGET) --tag "prestocpp/prestocpp-$(CPU_TARGET)-$(CONTAINER_NAME):$(USER)-$(shell date +%Y%m%d)" -f $(CONTAINER_NAME)-container.dockfile .
+
+runtime-container: submodules
+	rm -rf /tmp/docker && \
+	mkdir -p /tmp/docker && \
+	cp -r scripts/release-centos-dockerfile/* /tmp/docker && \
+	cd /tmp/docker && \
+	PRESTOCPP_ROOT_DIR=$(PRESTOCPP_ROOT_DIR) ./build-images.sh
 
 help:					#: Show the help messages
 	@cat $(firstword $(MAKEFILE_LIST)) | \
