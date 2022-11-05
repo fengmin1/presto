@@ -13,6 +13,9 @@ trap 'failure "LINENO" "BASH_LINENO" "${BASH_COMMAND}" "${?}"; [ -z "${DEBUG}" ]
 
 if [[ "${DEBUG}" == "0" || "${DEBUG}" == "false" || "${DEBUG}" == "False" ]]; then DEBUG=""; fi
 
+http_server_port=8080
+discovery_uri="http://127.0.0.1:${http_server_port}"
+
 while getopts ':-:' optchar; do
   case "$optchar" in
     -)

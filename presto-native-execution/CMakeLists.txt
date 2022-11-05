@@ -155,6 +155,8 @@ find_library(FIZZ fizz)
 find_library(WANGLE wangle)
 
 find_library(RE2 re2)
+find_library(FBTHRIFT fbthrift)
+include_directories(${FBTHRIFT_INCLUDE_DIR})
 
 set(PROXYGEN_LIBRARIES ${PROXYGEN_HTTP_SERVER} ${PROXYGEN} ${WANGLE} ${FIZZ})
 find_path(PROXYGEN_DIR NAMES include/proxygen)
