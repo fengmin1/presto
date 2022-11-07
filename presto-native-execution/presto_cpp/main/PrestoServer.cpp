@@ -239,7 +239,8 @@ void PrestoServer::run() {
 
   velox::dwrf::registerDwrfReaderFactory();
 #ifdef PRESTO_ENABLE_PARQUET
-  velox::parquet::registerParquetReaderFactory();
+  //velox::parquet::registerParquetReaderFactory();
+    velox::parquet::registerParquetReaderFactory(facebook::velox::parquet::ParquetReaderType::NATIVE);
 #endif
 
   taskManager_ = std::make_unique<TaskManager>(
